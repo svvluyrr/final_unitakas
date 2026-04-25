@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: unitakas_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: sinop_sifre
+      POSTGRES_DB: unitakas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d unitakas"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - takas-network
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: unitakas_n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    networks:
+      - takas-network
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin_sifre
+
+  backend:
+    build: ./backend
+    container_name: unitakas_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - takas-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: unitakas_frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./frontend/uni_takas.html:/usr/share/nginx/html/index.html
+    depends_on:
+      - backend
+    networks:
+      - takas-network
+
+volumes:
+  postgres_data:
+  uploads_data:
+
+networks:
+  takas-network:
+    driver: bridge
