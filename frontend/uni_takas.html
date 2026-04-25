@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UniTakas — Üniversite Takas Platformu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="uni_takas.css">
+</head>
+<body>
+
+<div class="bg-layer bg-grad"></div>
+<div class="bg-layer bg-grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div id="authPage" class="page active">
+  <div class="auth-left">
+    <a href="#" class="logo-link">
+      <div class="logo-ico">⇄</div>
+      <span class="logo-name">UniTakas</span>
+    </a>
+    <div class="live-pill"><span class="live-dot"></span>Sinop Üniversitesi Özel</div>
+    <h1 class="auth-h1">Kampüste<br><em>Takas</em><br>başlar.</h1>
+    <p class="auth-desc">Ders notlarını, kitaplarını, eşyalarını güvenle takas et. Yalnızca <strong style="color:var(--accent)">@sinop.edu.tr</strong> üyelerine özel, doğrulanmış öğrenci topluluğu.</p>
+    <div class="kpis">
+      <div class="kpi"><span>1.2K+</span><small>Öğrenci</small></div>
+      <div class="kpi"><span>340+</span><small>İlan</small></div>
+      <div class="kpi"><span>98%</span><small>Memnuniyet</small></div>
+    </div>
+    <div class="feat-list">
+      <div class="feat"><div class="feat-ico">📚</div><p><strong>Ders Notu & Kitap</strong><br>Sınav öncesi ihtiyacın olan her şey burada</p></div>
+      <div class="feat"><div class="feat-ico">🔒</div><p><strong>Doğrulanmış Kimlik</strong><br>Yalnızca üniversite mailiyle kayıt — tam güvenlik</p></div>
+      <div class="feat"><div class="feat-ico">⚡</div><p><strong>Anlık Bildirim</strong><br>Teklifler Telegram veya e-posta ile anında gelir</p></div>
+    </div>
+    <div class="auth-foot"><span class="af-dot"></span>Sinop Üniversitesi · 2025</div>
+  </div>
+
+  <div class="auth-right">
+    <div class="card">
+      <div class="tabs">
+        <button class="tab on" onclick="switchTab('login')">Giriş Yap</button>
+        <button class="tab" onclick="switchTab('register')">Kayıt Ol</button>
+      </div>
+
+      <div id="lPanel" class="fp on">
+        <h2>Tekrar hoş geldin 👋</h2>
+        <p class="sub">Üniversite e-postanla giriş yap</p>
+        <div class="field">
+          <label>Okul E-postası</label>
+          <div class="iw"><span class="ii">✉</span><input type="email" id="lEmail" placeholder="123456789@sinop.edu.tr"/></div>
+          <div class="ferr" id="lEmailErr">Geçerli bir @sinop.edu.tr adresi girin.</div>
+        </div>
+        <div class="field">
+          <label>Şifre</label>
+          <div class="iw"><span class="ii">🔑</span><input type="password" id="lPass" placeholder="••••••••"/></div>
+          <div class="ferr" id="lPassErr">Şifre en az 6 karakter olmalı.</div>
+        </div>
+        <a href="#" class="forgot">Şifremi unuttum →</a>
+        <button class="btn" onclick="doLogin()">Giriş Yap</button>
+        <div class="divider">ya da</div>
+        <div class="univ-pill"><span>🎓</span><div class="utxt"><strong>Sadece Sinop Üniversitesi</strong>@sinop.edu.tr uzantısı zorunludur</div></div>
+      </div>
+
+      <div id="rPanel" class="fp">
+        <h2>Hesap oluştur ✨</h2>
+        <p class="sub">Okul e-postanla ücretsiz üye ol</p>
+        <div class="field">
+          <label>Ad Soyad</label>
+          <div class="iw"><span class="ii">👤</span><input type="text" id="rName" placeholder="Ahmet Yılmaz"/></div>
+          <div class="ferr" id="rNameErr">Adınızı giriniz.</div>
+        </div>
+        <div class="field">
+          <label>Okul Numarası</label>
+          <div class="iw"><span class="ii">#</span><input type="text" id="rNo" placeholder="123456789" maxlength="12" oninput="syncMail()"/></div>
+          <div class="ferr" id="rNoErr">Geçerli okul numarası girin.</div>
+        </div>
+        <div class="field">
+          <label>Okul E-postası</label>
+          <div class="iw"><span class="ii">✉</span><input type="email" id="rEmail" placeholder="otomatik doldurulur" readonly style="opacity:.7;cursor:default"/></div>
+          <div class="fhint">✦ Okul numaranızdan otomatik oluşturulur</div>
+        </div>
+        <div class="field">
+          <label>Şifre</label>
+          <div class="iw"><span class="ii">🔑</span><input type="password" id="rPass" placeholder="En az 8 karakter"/></div>
+          <div class="ferr" id="rPassErr">En az 8 karakter olmalı.</div>
+        </div>
+        <div class="field">
+          <label>Şifre Tekrar</label>
+          <div class="iw"><span class="ii">🔒</span><input type="password" id="rPass2" placeholder="Tekrar girin"/></div>
+          <div class="ferr" id="rPass2Err">Şifreler eşleşmiyor.</div>
+        </div>
+        <button class="btn" onclick="doRegister()">Ücretsiz Kayıt Ol</button>
+        <p class="terms">Kayıt olarak <a href="#">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.</p>
+      </div>
+
+      <div id="successBlock" class="success-block">
+        <div class="si">🎉</div>
+        <h3>Kayıt Tamamlandı!</h3>
+        <p>Okul e-postana doğrulama linki gönderdik.<br>Gelen kutunu kontrol et.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANA SAYFA -->
+<div id="homePage" class="page">
+  <nav class="navbar">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-ico">⇄</div>
+      <span class="nav-logo-name">UniTakas</span>
+    </a>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="showSection('home', this)">🏠 Ana Sayfa</button>
+      <button class="nav-link" onclick="showSection('ilanlarim', this)">📋 İlanlarım</button>
+      <button class="nav-link" onclick="showToast('💬','Mesajlar yakında!')">💬 Mesajlar</button>
+      <button class="nav-link" onclick="showToast('🔄','Takaslarım yakında!')">🔄 Takaslarım</button>
+    </div>
+    <div class="nav-right">
+      <button class="nav-new-btn" onclick="showNewListingModal()">+ Yeni İlan</button>
+      <div class="nav-notif" onclick="showToast('🔔','3 yeni bildiriminiz var!')">🔔<span class="notif-badge"></span></div>
+      <div class="nav-avatar" id="navAvatar" onclick="showToast('👤','Profil sayfası yakında!')">A</div>
+      <button class="logout-btn" onclick="doLogout()">Çıkış</button>
+    </div>
+  </nav>
+
+  <!-- ANA SAYFA İÇERİĞİ -->
+  <div id="sectionHome" class="home-main">
+    <div class="greeting-row">
+      <div class="greeting">
+        <h1 id="greetTxt">Merhaba 👋</h1>
+        <p>Bugün kampüste ne takas etmek istersin?</p>
+      </div>
+      <div class="greeting-actions">
+        <button class="ga-btn" onclick="showToast('🔍','Gelişmiş arama yakında!')">🔍 Ara</button>
+        <button class="ga-btn primary" onclick="showNewListingModal()">+ İlan Ver</button>
+      </div>
+    </div>
+
+    <div class="stat-cards">
+      <div class="sc"><div class="sc-top"><div class="sc-icon blue">📋</div><span class="sc-trend up">+12%</span></div><div class="sc-num">342</div><div class="sc-label">Aktif İlan</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon teal">🔄</div><span class="sc-trend up">+8%</span></div><div class="sc-num">128</div><div class="sc-label">Tamamlanan Takas</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon yellow">👥</div><span class="sc-trend up">+24%</span></div><div class="sc-num">1.2K</div><div class="sc-label">Aktif Üye</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon pink">⭐</div><span class="sc-trend up">%98</span></div><div class="sc-num">4.9</div><div class="sc-label">Ortalama Puan</div></div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="filter-bar">
+          <div class="search-wrap"><span class="search-ico">🔍</span><input type="text" placeholder="İlan ara..." oninput="filterCards(this.value)"/></div>
+          <button class="filter-chip on" onclick="setFilter(this,'Tümü')">Tümü</button>
+          <button class="filter-chip" onclick="setFilter(this,'Kitap')">📚 Kitap</button>
+          <button class="filter-chip" onclick="setFilter(this,'Not')">📝 Not</button>
+          <button class="filter-chip" onclick="setFilter(this,'Eşya')">🎒 Eşya</button>
+          <button class="filter-chip" onclick="setFilter(this,'Elektronik')">💻 Elektronik</button>
+        </div>
+        <div class="listings-label">Son İlanlar</div>
+        <div class="listings" id="listingsGrid"></div>
+      </div>
+
+      <div class="sidebar">
+        <div class="side-card" style="animation-delay:.25s">
+          <div class="profile-top">
+            <div class="profile-avatar" id="sideAvatar">A</div>
+            <div class="profile-info"><h4 id="sideUserName">Ahmet Yılmaz</h4><p id="sideUserMail">123456@sinop.edu.tr</p></div>
+          </div>
+          <div class="profile-stats"><div class="ps"><div class="pn">5</div><div class="pl">İlan</div></div><div class="ps"><div class="pn">12</div><div class="pl">Takas</div></div><div class="ps"><div class="pn">4.8</div><div class="pl">Puan</div></div></div>
+        </div>
+
+        <div class="side-card" style="animation-delay:.35s">
+          <h3><span>⚡</span>Son Aktiviteler</h3>
+          <div class="act-item"><div class="act-av">M</div><div><div class="act-txt"><strong>Mehmet A.</strong> "Veri Yapıları" ilanına teklif gönderdi</div><div class="act-time">5 dakika önce</div></div></div>
+          <div class="act-item"><div class="act-av">Z</div><div><div class="act-txt"><strong>Zeynep K.</strong> yeni bir kitap ilanı ekledi</div><div class="act-time">23 dakika önce</div></div></div>
+          <div class="act-item"><div class="act-av">E</div><div><div class="act-txt"><strong>Elif S.</strong> ile takas tamamlandı ✓</div><div class="act-time">2 saat önce</div></div></div>
+        </div>
+
+        <div class="side-card" style="animation-delay:.4s">
+          <h3><span>📍</span>Takas Noktaları</h3>
+          <div class="campus-map"><span class="map-ico">🗺️</span><span>Kampüs Haritası</span></div>
+          <div class="map-points"><span class="mp">📚 Kütüphane</span><span class="mp">☕ Kantin</span><span class="mp">🏛️ Mühendislik</span><span class="mp">⚽ Spor Salonu</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- İLANLARIM SAYFASI -->
+  <div id="sectionIlanlarim" class="home-main" style="display:none">
+    <div class="greeting-row">
+      <div class="greeting">
+        <h1>📋 İlanlarım</h1>
+        <p>Yayınladığın ilanları buradan yönet</p>
+      </div>
+      <div class="greeting-actions">
+        <button class="ga-btn primary" onclick="showNewListingModal()">+ Yeni İlan</button>
+      </div>
+    </div>
+    <div class="listings" id="myListingsGrid" style="margin-top:20px"></div>
+  </div>
+</div>
+
+<!-- İLAN DETAY MODAL -->
+<div id="listingDetailModal" class="modal-overlay" onclick="if(event.target===this)closeDetailModal()">
+  <div class="modal-box" style="max-width:600px">
+    <div id="detailImg" style="width:100%;height:200px;background-size:cover;background-position:center;border-radius:12px;margin-bottom:16px;"></div>
+    <span id="detailCat" class="lc-cat" style="position:static;margin-bottom:8px;display:inline-block;"></span>
+    <h2 id="detailTitle" style="margin:8px 0 4px"></h2>
+    <p id="detailDesc" style="color:var(--muted);font-size:14px;margin-bottom:8px;"></p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span id="detailPrice" class="lc-price"></span>
+      <span id="detailOwner" style="font-size:13px;color:var(--muted);"></span>
+    </div>
+    <button id="contactBtn" class="btn" style="margin-bottom:20px;" onclick="contactOwner()">📩 İletişime Geç</button>
+    <h3 style="margin-bottom:12px;">💬 Yorumlar</h3>
+    <div id="commentsList" style="margin-bottom:16px;max-height:200px;overflow-y:auto;"></div>
+    <div class="modal-field">
+      <textarea id="commentInput" placeholder="Yorum yaz..." rows="2"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeDetailModal()">Kapat</button>
+      <button class="modal-submit" onclick="submitComment()">Yorum Gönder</button>
+    </div>
+  </div>
+</div>
+
+<!-- YENİ İLAN MODAL -->
+<div id="newListingModal" class="modal-overlay" onclick="if(event.target===this)closeNewListingModal()">
+  <div class="modal-box">
+    <h2>✨ Yeni İlan Oluştur</h2>
+    <p class="sub">Takas etmek istediğin ürünü ekle</p>
+    <div class="modal-field">
+      <label>Başlık</label>
+      <input type="text" id="nlTitle" placeholder="Ör: Veri Yapıları Kitabı"/>
+    </div>
+    <div class="modal-field">
+      <label>Açıklama</label>
+      <textarea id="nlDesc" placeholder="Ürün hakkında kısa bilgi..."></textarea>
+    </div>
+    <div class="modal-row">
+      <div class="modal-field">
+        <label>Kategori</label>
+        <select id="nlCategory">
+          <option value="Kitap">📚 Kitap</option>
+          <option value="Not">📝 Not</option>
+          <option value="Elektronik">💻 Elektronik</option>
+          <option value="Eşya">🎒 Eşya</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Tür</label>
+        <select id="nlType">
+          <option value="takas">🔄 Takas</option>
+          <option value="satis">💰 Satış</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Fiyat / Takas Teklifi</label>
+      <input type="text" id="nlPrice" placeholder="Ör: 150₺ veya Takas veya Ücretsiz"/>
+    </div>
+    <div class="modal-field">
+      <label>Fotoğraf (isteğe bağlı)</label>
+      <input type="file" id="nlImage" accept="image/*" style="display:none" onchange="handleImageUpload(this)"/>
+      <label id="uploadLabel" for="nlImage" style="display:inline-block;cursor:pointer;background:var(--card);border:1.5px dashed var(--border);border-radius:10px;padding:10px 20px;font-size:14px;color:var(--muted);transition:.2s;">📷 Fotoğraf Ekle</label>
+      <img id="imagePreview" src="" alt="Önizleme" style="display:none;width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-top:8px;"/>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeNewListingModal()">İptal</button>
+      <button class="modal-submit" onclick="submitListing()">İlanı Yayınla</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"><span class="ti" id="toastIco">ℹ️</span><span id="toastMsg">Bilgi</span></div>
+
+<script src="uni_takas.js"></script>
+</body>
+</html>
